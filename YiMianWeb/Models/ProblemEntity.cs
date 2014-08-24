@@ -34,6 +34,7 @@ namespace YiMianWeb.Models
     [Table("ProblemExt")]
     public class ProblemExtEntity
     {
+        [Key]
         public int ProblemID { get; set; }
         public int Attempted { get; set; }
         public int LikeCount { get; set; }

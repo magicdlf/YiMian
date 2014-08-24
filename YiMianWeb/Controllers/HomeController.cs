@@ -9,15 +9,36 @@ namespace YiMianWeb.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        [HttpPost]
+        public ActionResult Submit(HomeModel model)
+        {
+            using (AnswerContext db = new AnswerContext())
+            {
+                AnswerEntity answer = new AnswerEntity()
+                {
+                    Content = model.Content,
+                    UserId = model.UserId,
+                    ProblemId = model.ProblemId,
+                    AnswerTime = DateTime.Now,
+                    CreateTime = DateTime.Now,
+                    ChangeTime = DateTime.Now
+
+                };
+                db.Answers.Add(answer);
+                db.SaveChanges();
+
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult Index(int problemId = 1)
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             using (ProblemContext db = new ProblemContext())
             {
-                ProblemEntity problem = db.Problems.FirstOrDefault(p => p.ProblemId == 1);
+                ProblemEntity problem = db.Problems.FirstOrDefault(p => p.ProblemId == problemId);
 
-                ViewBag.Problem = problem.Title;
+                ViewBag.Problem = problem;
             }
             return View();
         }
